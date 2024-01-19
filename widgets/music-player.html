@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image" href="/assets/favicon.ico" />
+
+  <title>awesome-notion-widgets-music-player</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting/dist/Meting.min.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .aplayer {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 95%;
+      margin: 0 auto;
+    }
+  </style>
+
+</head>
+
+<body>
+</body>
+
+<script>
+  // 个人自建 API，原后端不开魔法梯子调用不了
+  var meting_api = 'https://api.meting.rylan.cn/api?server=:server&type=:type&id=:id&auth=:auth&r=:r';
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const defaultParams = {
+      'server': 'netease',
+      'type': 'playlist',
+      'id': '9173198673',
+    };
+
+    const hostedParams = {
+      'url': '',
+      'name': '',
+      'artist': '',
+      'cover': ''
+    };
+
+    const otherParams = {
+      'autoplay': false,
+      'theme': '#61b69f',
+      'loop': 'none',
+      'order': 'list',
+      'preload': 'auto',
+      'volume': 0.7,
+      'mutex': true,
+      'list-folded': false,
+      'list-max-height': '160px'
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const metingElement = document.createElement('meting-js');
+
+    if (urlParams.has('url')) {
+      Object.assign(hostedParams, otherParams);
+      Object.keys(hostedParams).forEach(param => {
+        const value = urlParams.get(param) || hostedParams[param];
+        metingElement.setAttribute(param, value);
+      });
+    } else {
+      Object.assign(defaultParams, otherParams);
+      Object.keys(defaultParams).forEach(param => {
+        const value = urlParams.get(param) || defaultParams[param];
+        metingElement.setAttribute(param, value);
+      });
+    }
+
+    document.body.appendChild(metingElement);
+
+    // 'lrc-type': "0" 莫名不生效，改用控制 CSS，等它先创建出来后再手动隐藏
+    const observer = new MutationObserver(mutations => {
+      if (urlParams.get('lrc') === '0' && document.querySelector('.aplayer-lrc-contents')) {
+        const lrcContentElement = document.querySelector('.aplayer-lrc-contents');
+        lrcContentElement.style.visibility = 'hidden';
+        observer.disconnect();
+      }
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+  });
+</script>
+
+</html>

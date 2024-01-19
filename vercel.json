@@ -1,0 +1,16 @@
+{
+    "routes": [
+        {
+            "src": "/poem",
+            "dest": "/widgets/chinese-poem.html"
+        },
+        {
+            "src": "/quote",
+            "dest": "/widgets/english-quote.html"
+        },
+        {
+            "src": "/music",
+            "dest": "/widgets/music-player.html"
+        }
+    ]
+}

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image" href="/assets/favicon.ico" />
+
+    <title>awesome-notion-widgets-english-quote</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary-size: 18px;
+            --primary-width: 200px;
+        }
+
+        .quote-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid #c6c6c6;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px #b7b6b6;
+            max-width: var(--primary-width);
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .img-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            border-radius: 8px;
+            filter: blur(1px);
+        }
+
+        .img-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: rgba(197, 197, 197, 0.35);
+            border-radius: 8px;
+        }
+
+        .text-container {
+            margin: 20px;
+        }
+
+        #content {
+            font-size: var(--primary-size);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        #author {
+            font-size: calc(var(--primary-size) - 3px);
+            font-style: italic;
+            text-align: right;
+            filter: brightness(120%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="quote-container">
+        <div class="img-container"></div>
+        <div class="text-container">
+            <div id="content"></div>
+            <div id="author"></div>
+        </div>
+    </div>
+</body>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    let keywords = "nature,water";
+
+    function updateElement() {
+        const keys = urlParams.get('keys');
+        if (keys) {
+            keywords = keys;
+        }
+
+        const size = urlParams.get('size');
+        if (size) {
+            document.documentElement.style.setProperty('--primary-size', `${size}px`);
+        }
+
+        const width = urlParams.get('width');
+        if (width) {
+            document.documentElement.style.setProperty('--primary-width', `${width}px`);
+        }
+    }
+
+    /**
+     * 计算图片亮度，调节字体颜色
+     * @param {string} imageSrc 图片地址
+    */
+    function calculateBrightness(imageSrc) {
+        const img = new Image();
+        img.src = imageSrc;
+        img.crossOrigin = 'Anonymous';
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0, img.width, img.height);
+
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imageData.data;
+
+            let red, green, blue, avg;
+            let total = 0;
+            let count = 0;
+            for (let i = 0; i < data.length; i += 4) {
+                red = data[i];
+                green = data[i + 1];
+                blue = data[i + 2];
+                avg = (red + green + blue) / 3;
+                total += avg;
+                count++;
+            }
+
+            const brightness = total / count;
+            const textColor = brightness > 128 ? '#000000' : '#ffffff';
+            document.querySelector('.quote-container').style.color = textColor;
+        };
+    }
+
+    async function fetchImage() {
+        try {
+            const unsplashUrl = `https://source.unsplash.com/featured/400x300?${keywords}`;
+            const response = await fetch(unsplashUrl);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const imageUrl = await response.url;
+            calculateBrightness(imageUrl);
+            const imgContainer = document.querySelector('.img-container');
+            imgContainer.style.backgroundImage = `url('${imageUrl}')`;
+            imgContainer.style.backgroundSize = 'cover';
+            imgContainer.style.backgroundPosition = 'center';
+        } catch (error) {
+            console.error('Error fetching image:', error);
+        }
+    }
+
+    function buildApiUrl() {
+        const baseUrl = 'https://api.quotable.io/random';
+        const supportedParams = ['author', 'tags', 'minLength', 'maxLength'];
+        const params = {};
+        const queryString = window.location.search.substring(1);
+        const queries = queryString.split('&');
+        for (let i = 0; i < queries.length; i++) {
+            const pair = queries[i].split('=');
+            if (pair.length === 2 && supportedParams.includes(pair[0])) {
+                params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+            }
+        }
+
+        const query = Object.keys(params)
+            .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+            .join('&');
+        return baseUrl + (query ? '?' + query : '');;
+    }
+
+    async function fetchQuote() {
+        try {
+            const response = await fetch(buildApiUrl());
+            if (!response.ok) {
+                throw new Error('Network error');
+            }
+            const data = await response.json();
+            const content = data.content; // 内容
+            const author = data.author; // 作者
+
+            const contentEl = document.getElementById('content');
+            contentEl.textContent = content;
+
+            const authorEl = document.getElementById('author');
+            authorEl.innerHTML = '&mdash; ' + author;
+        } catch (error) {
+            console.error('Error fetching quotes', error);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        updateElement();
+        fetchImage();
+        fetchQuote();
+    });
+</script>
+
+</html>
