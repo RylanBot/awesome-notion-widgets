@@ -8,6 +8,8 @@
 
     <title>awesome-notion-widgets-english-quote</title>
 
+    <link rel="stylesheet" href="/assets/global.css">
+
     <style>
         * {
             margin: 0;
@@ -15,20 +17,23 @@
         }
 
         :root {
+            --primary-color: #999bec;
             --primary-size: 18px;
             --primary-width: 200px;
         }
 
         .quote-container {
+            display: none;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            border: 1px solid #c6c6c6;
+            border: 1px solid #c9c9c9;
             border-radius: 8px;
-            box-shadow: 0 4px 6px #b7b6b6;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             max-width: var(--primary-width);
             font-family: 'Times New Roman', Times, serif;
+            text-shadow: 0.5px 0px #c9c9c9;
         }
 
         .img-container {
@@ -43,17 +48,6 @@
             filter: blur(1px);
         }
 
-        .img-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            background-color: rgba(197, 197, 197, 0.35);
-            border-radius: 8px;
-        }
-
         .text-container {
             margin: 20px;
         }
@@ -62,18 +56,21 @@
             font-size: var(--primary-size);
             font-weight: bold;
             margin-bottom: 10px;
+            text-shadow: 0.5px 0px #c9c9c9;
         }
 
         #author {
-            font-size: calc(var(--primary-size) - 3px);
+            font-size: calc(var(--primary-size) - 4px);
             font-style: italic;
             text-align: right;
             filter: brightness(120%);
+            text-shadow: 1px 1px 3px #a9a9a9;
         }
     </style>
 </head>
 
 <body>
+    <div class="loader" id="loader"></div>
     <div class="quote-container">
         <div class="img-container"></div>
         <div class="text-container">
@@ -136,6 +133,8 @@
 
             const brightness = total / count;
             const textColor = brightness > 128 ? '#000000' : '#ffffff';
+            const shadowColor = brightness > 128 ? '#c8c8c8' : '#888888';
+
             document.querySelector('.quote-container').style.color = textColor;
         };
     }
@@ -144,9 +143,6 @@
         try {
             const unsplashUrl = `https://source.unsplash.com/featured/400x300?${keywords}`;
             const response = await fetch(unsplashUrl);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
             const imageUrl = await response.url;
             calculateBrightness(imageUrl);
             const imgContainer = document.querySelector('.img-container');
@@ -192,8 +188,11 @@
 
             const authorEl = document.getElementById('author');
             authorEl.innerHTML = '&mdash; ' + author;
+
+            document.querySelector('.quote-container').style.display = 'block';
+            document.getElementById('loader').style.display = 'none';
         } catch (error) {
-            console.error('Error fetching quotes', error);
+            console.error('Error fetching quote', error);
         }
     }
 

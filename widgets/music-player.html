@@ -8,6 +8,7 @@
 
   <title>awesome-notion-widgets-music-player</title>
 
+  <link rel="stylesheet" href="/assets/global.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
   <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/meting/dist/Meting.min.js"></script>
@@ -16,6 +17,10 @@
     * {
       margin: 0;
       padding: 0;
+    }
+
+    :root {
+      --primary-color: #61b69f;
     }
 
     .aplayer {
@@ -31,13 +36,37 @@
 </head>
 
 <body>
+  <div class="loader" id="loader"></div>
 </body>
 
 <script>
   // 个人自建 API，原后端不开魔法梯子调用不了
   var meting_api = 'https://api.meting.rylan.cn/api?server=:server&type=:type&id=:id&auth=:auth&r=:r';
 
-  document.addEventListener('DOMContentLoaded', function () {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  function updateElement() {
+    const color = urlParams.get('theme');
+    if (color) {
+      document.documentElement.style.setProperty('--primary-color', color);
+    }
+
+    const observer = new MutationObserver(mutations => {
+      if (urlParams.get('lrc') === '0' && document.querySelector('.aplayer-lrc-contents')) {
+        const lrcContentElement = document.querySelector('.aplayer-lrc-contents');
+        lrcContentElement.style.visibility = 'hidden';
+        observer.disconnect();
+      }
+
+      if (document.querySelector('.aplayer-lrc-contents')) {
+        document.getElementById('loader').style.display = 'none';
+      }
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  function initMetingjs() {
     const defaultParams = {
       'server': 'netease',
       'type': 'playlist',
@@ -63,8 +92,6 @@
       'list-max-height': '160px'
     }
 
-    const urlParams = new URLSearchParams(window.location.search);
-
     const metingElement = document.createElement('meting-js');
 
     if (urlParams.has('url')) {
@@ -82,17 +109,11 @@
     }
 
     document.body.appendChild(metingElement);
+  }
 
-    // 'lrc-type': "0" 莫名不生效，改用控制 CSS，等它先创建出来后再手动隐藏
-    const observer = new MutationObserver(mutations => {
-      if (urlParams.get('lrc') === '0' && document.querySelector('.aplayer-lrc-contents')) {
-        const lrcContentElement = document.querySelector('.aplayer-lrc-contents');
-        lrcContentElement.style.visibility = 'hidden';
-        observer.disconnect();
-      }
-    });
-
-    observer.observe(document.body, { childList: true, subtree: true });
+  document.addEventListener('DOMContentLoaded', function () {
+    initMetingjs();
+    updateElement();
   });
 </script>
 

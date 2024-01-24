@@ -8,6 +8,7 @@
 
     <title>awesome-notion-widgets-chinese-poem</title>
 
+    <link rel="stylesheet" href="/assets/global.css">
     <link rel="stylesheet" href="/assets/fonts/result.css">
 
     <style>
@@ -22,6 +23,7 @@
         }
 
         .poem-container {
+            display: none;
             color: var(--primary-color);
             position: absolute;
             top: 50%;
@@ -36,7 +38,7 @@
 
         .poem-content {
             display: flex;
-            font-family: "SCFwxz";
+            font-family: "SCFwxz", serif, Georgia, Times;
         }
 
         #sentence {
@@ -52,12 +54,12 @@
         #source-url {
             color: var(--primary-color);
             font-size: calc(var(--primary-size) - 9px);
+            font-family: serif, Georgia, Times;
             writing-mode: vertical-rl;
             text-underline-offset: 3px;
             letter-spacing: 4px;
             filter: brightness(75%);
             margin: 0px 10px;
-            font-family: serif, Georgia, Times;
         }
 
         .poem-info {
@@ -67,24 +69,28 @@
             padding-left: 15px;
         }
 
-        #name {
-            font-size: calc(var(--primary-size) - 4px);
-            writing-mode: vertical-rl;
-        }
-
         #author {
             font-size: calc(var(--primary-size) - 6px);
             writing-mode: vertical-rl;
             background-color: var(--primary-color);
             border-radius: 25px;
             color: #ffffff;
-            padding: 1px;
-            min-width: 15px;
+            padding: 3px 1px;
+            min-width: 10px;
+            margin: 0 auto;
+            margin-bottom: 8px;
+        }
+
+        #name {
+            font-size: calc(var(--primary-size) - 4px);
+            writing-mode: vertical-rl;
+            margin: 0 auto;
         }
     </style>
 </head>
 
 <body>
+    <div class="loader" id="loader"></div>
     <div class="poem-container">
         <div class="poem-content">
             <div id="sentence"></div>
@@ -122,9 +128,9 @@
             nameEl.style.display = 'none';
         }
 
-        const bgEl = document.getElementsByClassName('poem-info')[0];
+        const infoEl = document.querySelector('.poem-info');
         if (author === 'false' && name === 'false') {
-            bgEl.style.display = 'none';
+            infoEl.style.display = 'none';
         }
     }
 
@@ -136,6 +142,7 @@
     }
 
     async function fetchData() {
+        document.getElementById('loader').style.display = 'block'; // 显示加载动画
         try {
             const response = await fetch(buildApiUrl());
             if (!response.ok) {
@@ -174,8 +181,11 @@
                 lineContainer.style.marginTop = (index * 15) + 'px';
                 sentenceEl.appendChild(lineContainer);
             });
+
+            document.querySelector('.poem-container').style.display = 'block';
+            document.getElementById('loader').style.display = 'none';
         } catch (error) {
-            console.error('Error fetching poems', error);
+            console.error('Error fetching poem', error);
         }
     }
 
