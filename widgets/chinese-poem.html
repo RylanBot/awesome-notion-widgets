@@ -149,30 +149,17 @@
                 throw new Error('Network error');
             }
             const data = await response.json();
-            const name = data.data.name; // 诗名
-            const author = data.data.author; // 作者
-            const sentence = data.data.sentence; // 释义
-            const url = data.data.src_url; // 句子
+            const origin = data.origin; // 诗名
+            const author = data.author; // 作者
+            const content = data.content; // 诗句
 
             const nameEl = document.getElementById('name');
-            nameEl.textContent = "︽" + name + "︾";
+            nameEl.textContent = "︽" + origin + "︾";
 
             const authorEl = document.getElementById('author');
             authorEl.textContent = author;
-
-            const meaning = urlParams.get('meaning');
-            if (url && meaning !== 'false') {
-                const newUrlEl = document.createElement('a');
-                newUrlEl.id = 'source-url';
-                newUrlEl.setAttribute('target', '_blank');
-                newUrlEl.href = url;
-                newUrlEl.textContent = '查看释义';
-                const containerEl = document.querySelector('.poem-container');
-                containerEl.appendChild(newUrlEl);
-            }
-
             const sentenceEl = document.getElementById('sentence');
-            const poemLines = sentence.match(/[^、，；。！？\s]+[、，；。！？\s]?/g);
+            const poemLines = content.match(/[^、，；。！？\s]+[、，；。！？\s]?/g);
             sentenceEl.innerHTML = '';
             poemLines.forEach((line, index) => {
                 var lineContainer = document.createElement('div');
