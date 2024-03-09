@@ -14,7 +14,7 @@
 
 ### 🔮 随机诗句
 
-#### 🎁 致谢 [诏预](https://open.saintic.com/) 开放 API
+#### 🎁 致谢 [今日诗词](https://www.wxhi.cn/) 开放 API
 
 ```
 https://notion-widgets.rylan.cn/poem
@@ -26,7 +26,6 @@ https://notion-widgets.rylan.cn/poem
 | catalog | 诗歌子分类       | 同上，使用拼音（比如子分类夏天，传入 xiatian）    |
 | author  | 是否显示作者     | true（默认）/ false                               |
 | name    | 是否显示诗名     | true（默认）/ false                               |
-| meaning | 是否显示释义按钮 | true（默认）/ false                               |
 | color   | 字体颜色         | 英文字符串 或者 16 进制（其中 # 号使用 %23 代替） |
 | size    | 字体大小         | 传入数字即可（对应单位 px）                       |
 
