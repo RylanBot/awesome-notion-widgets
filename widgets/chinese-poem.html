@@ -9,7 +9,10 @@
     <title>awesome-notion-widgets-chinese-poem</title>
 
     <link rel="stylesheet" href="/assets/global.css">
-    <link rel="stylesheet" href="/assets/fonts/result.css">
+    <!-- <link rel="stylesheet" href="/assets/fonts/result.css"> -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -19,7 +22,7 @@
 
         :root {
             --primary-color: #345352;
-            --primary-size: 20px;
+            --primary-size: 18px;
         }
 
         .poem-container {
@@ -30,61 +33,56 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background-color: #ffffff;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
-            padding: 20px;
+            padding: 20px 10px;
             width: fit-content;
         }
 
         .poem-content {
             display: flex;
-            font-family: "SCFwxz", serif, Georgia, Times;
+            /* font-family: "SCFwxz"; */
+            font-family: "Noto Serif SC", serif;
+            letter-spacing: 5px;
+            margin-left: 3px;
         }
 
         #sentence {
             display: flex;
+            padding-left: 5px;
+            padding-right: 15px;
         }
 
         .poem-line {
             font-size: var(--primary-size);
             writing-mode: vertical-rl;
             min-width: 30px;
-        }
-
-        #source-url {
-            color: var(--primary-color);
-            font-size: calc(var(--primary-size) - 9px);
-            font-family: serif, Georgia, Times;
-            writing-mode: vertical-rl;
-            text-underline-offset: 3px;
-            letter-spacing: 4px;
-            filter: brightness(75%);
-            margin: 0px 10px;
+            text-align: center;
         }
 
         .poem-info {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding-left: 15px;
+            padding-right: 10px;
         }
 
         #author {
-            font-size: calc(var(--primary-size) - 6px);
+            font-size: calc(var(--primary-size) - 7px);
             writing-mode: vertical-rl;
             background-color: var(--primary-color);
             border-radius: 25px;
             color: #ffffff;
-            padding: 3px 1px;
+            padding: 6px 2px;
             min-width: 10px;
             margin: 0 auto;
-            margin-bottom: 8px;
         }
 
         #name {
             font-size: calc(var(--primary-size) - 4px);
             writing-mode: vertical-rl;
             margin: 0 auto;
+            margin-top: 8px;
         }
     </style>
 </head>
@@ -181,7 +179,7 @@
         fetchData();
     });
 
-    window.addEventListener('message', function(event) {
+    window.addEventListener('message', function (event) {
         document.body.style.backgroundColor = event.data;
     });
 </script>
