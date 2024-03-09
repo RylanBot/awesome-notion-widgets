@@ -201,6 +201,10 @@
         fetchImage();
         fetchQuote();
     });
+
+    window.addEventListener('message', function (event) {
+        document.body.style.backgroundColor = event.data;
+    });
 </script>
 
 </html>

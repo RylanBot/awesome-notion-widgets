@@ -137,7 +137,7 @@
     function buildApiUrl() {
         const theme = urlParams.get('theme') || '';
         const catalog = urlParams.get('catalog') || '';
-        const apiUrl = `https://open.saintic.com/api/sentence/${theme}.${catalog}.json`;
+        const apiUrl = `https://v1.jinrishici.com/${theme}/${catalog}.json`;
         return apiUrl;
     }
 
@@ -192,6 +192,10 @@
     document.addEventListener('DOMContentLoaded', () => {
         updateElement();
         fetchData();
+    });
+
+    window.addEventListener('message', function(event) {
+        document.body.style.backgroundColor = event.data;
     });
 </script>
 
