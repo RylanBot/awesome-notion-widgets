@@ -71,7 +71,7 @@
 </head>
 
 <body>
-    <div class="loader" id="loader"></div>
+    <div id="loader"></div>
     <div class="quote-container">
         <div class="img-container"></div>
         <div class="text-container">
@@ -141,18 +141,34 @@
     }
 
     async function fetchImage() {
-        try {
-            const unsplashUrl = `https://source.unsplash.com/featured/400x300?${keywords}`;
-            const response = await fetch(unsplashUrl);
-            const imageUrl = await response.url;
-            calculateBrightness(imageUrl);
-            const imgContainer = document.querySelector('.img-container');
-            imgContainer.style.backgroundImage = `url('${imageUrl}')`;
-            imgContainer.style.backgroundSize = 'cover';
-            imgContainer.style.backgroundPosition = 'center';
-        } catch (error) {
-            console.error('Error fetching image:', error);
-        }
+        const maxRetries = 2;
+        let retryCount = 0;
+
+        const imgContainer = document.querySelector('.img-container');
+        let imageUrl = ''; // 占位符
+
+        const tryFetchImage = async () => {
+            try {
+                const unsplashUrl = `https://source.unsplash.com/featured/400x300?${keywords}`;
+                const response = await fetch(unsplashUrl);
+                imageUrl = await response.url;
+            } catch (error) {
+                retryCount++;
+                if (retryCount <= maxRetries) {
+                    await tryFetchImage();
+                } else {
+                    imageUrl = '/assets/default.png';
+                    console.error('Error fetching image', error);
+                }
+            }
+        };
+
+        await tryFetchImage();
+
+        calculateBrightness(imageUrl);
+        imgContainer.style.backgroundSize = 'cover';
+        imgContainer.style.backgroundPosition = 'center';
+        imgContainer.style.backgroundImage = `url('${imageUrl}')`;
     }
 
     function buildApiUrl() {
