@@ -141,18 +141,30 @@
     }
 
     async function fetchImage() {
-        try {
-            const unsplashUrl = `https://source.unsplash.com/featured/400x300?${keywords}`;
-            const response = await fetch(unsplashUrl);
-            const imageUrl = await response.url;
-            calculateBrightness(imageUrl);
-            const imgContainer = document.querySelector('.img-container');
-            imgContainer.style.backgroundImage = `url('${imageUrl}')`;
-            imgContainer.style.backgroundSize = 'cover';
-            imgContainer.style.backgroundPosition = 'center';
-        } catch (error) {
-            console.error('Error fetching image:', error);
-        }
+        let retryCount = 0;
+        const maxRetries = 2;
+
+        const tryFetchImage = async () => {
+            try {
+                const unsplashUrl = `https://source.unsplash.com/featured/400x300?${keywords}`;
+                const response = await fetch(unsplashUrl);
+                const imageUrl = await response.url;
+                calculateBrightness(imageUrl);
+                const imgContainer = document.querySelector('.img-container');
+                imgContainer.style.backgroundImage = `url('${imageUrl}')`;
+                imgContainer.style.backgroundSize = 'cover';
+                imgContainer.style.backgroundPosition = 'center';
+            } catch (error) {
+                retryCount++;
+                if (retryCount <= maxRetries) {
+                    await tryFetchImage();
+                } else {
+                    console.error('Error fetching image', error);
+                }
+            }
+        };
+
+        await tryFetchImage();
     }
 
     function buildApiUrl() {
