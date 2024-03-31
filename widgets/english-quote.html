@@ -82,13 +82,21 @@
 </body>
 
 <script>
+    const DEFAULT_BG = 'https://s2.loli.net/2024/03/31/BENehqCG5axTvO9.png'
+
     const urlParams = new URLSearchParams(window.location.search);
     let keywords = "nature,water";
+    let cardBg = '';
 
     function updateElement() {
         const keys = urlParams.get('keys');
         if (keys) {
             keywords = keys;
+        }
+
+        const bg = urlParams.get('bg');
+        if (bg) {
+            cardBg = bg;
         }
 
         const size = urlParams.get('size');
@@ -157,13 +165,17 @@
                 if (retryCount <= maxRetries) {
                     await tryFetchImage();
                 } else {
-                    imageUrl = '/assets/default.png';
+                    imageUrl = DEFAULT_BG;
                     console.error('Error fetching image', error);
                 }
             }
         };
 
-        await tryFetchImage();
+        if (!cardBg) {
+            await tryFetchImage();
+        } else {
+            imageUrl = cardBg;
+        }
 
         calculateBrightness(imageUrl);
         imgContainer.style.backgroundSize = 'cover';
