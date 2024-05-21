@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="/assets/global.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
   <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/meting/dist/Meting.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/meting/2.0.1/Meting.min.js"></script>
 
   <style>
     * {
@@ -40,9 +40,6 @@
 </body>
 
 <script>
-  // 个人自建 API，原后端不开魔法梯子调用不了
-  var meting_api = 'https://api.meting.rylan.cn/api?server=:server&type=:type&id=:id&auth=:auth&r=:r';
-
   const urlParams = new URLSearchParams(window.location.search);
 
   function updateElement() {
