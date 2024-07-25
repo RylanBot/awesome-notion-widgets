@@ -127,7 +127,7 @@
         const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
         const poemSrc = isLocal ? '/widgets/chinese-poem.html' : '/poem';
-        const quoteSrc = isLocal ? '/widgets/english-quote.html?maxLength=65' : '/quote?maxLength=65';
+        const quoteSrc = isLocal ? '/widgets/english-quote.html?maxLength=100' : '/quote?maxLength=100';
         const musicPlayerSrc = isLocal ? '/widgets/music-player.html' : '/music';
 
         document.getElementById('poem-iframe').src = poemSrc;

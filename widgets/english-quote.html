@@ -82,23 +82,11 @@
 </body>
 
 <script>
-    const DEFAULT_BG = 'https://s2.loli.net/2024/03/31/BENehqCG5axTvO9.png'
-
     const urlParams = new URLSearchParams(window.location.search);
-    let keywords = "nature,water";
-    let cardBg = '';
+    let bg = '';
+    let maxLength = 0;
 
     function updateElement() {
-        const keys = urlParams.get('keys');
-        if (keys) {
-            keywords = keys;
-        }
-
-        const bg = urlParams.get('bg');
-        if (bg) {
-            cardBg = bg;
-        }
-
         const size = urlParams.get('size');
         if (size) {
             document.documentElement.style.setProperty('--primary-size', `${size}px`);
@@ -108,6 +96,9 @@
         if (width) {
             document.documentElement.style.setProperty('--primary-width', `${width}px`);
         }
+
+        bg = urlParams.get('bg') || '';
+        maxLength = urlParams.get('maxLength') || 0;
     }
 
     /**
@@ -149,32 +140,24 @@
     }
 
     async function fetchImage() {
-        const maxRetries = 2;
-        let retryCount = 0;
-
         const imgContainer = document.querySelector('.img-container');
-        let imageUrl = ''; // 占位符
+        let imageUrl = '';
 
         const tryFetchImage = async () => {
             try {
-                const unsplashUrl = `https://source.unsplash.com/featured/400x300?${keywords}`;
-                const response = await fetch(unsplashUrl);
-                imageUrl = await response.url;
+                const bingApi = 'https://bing.biturl.top/';
+                const response = await fetch(bingApi);
+                const data = await response.json();
+                imageUrl = await data.url;
             } catch (error) {
-                retryCount++;
-                if (retryCount <= maxRetries) {
-                    await tryFetchImage();
-                } else {
-                    imageUrl = DEFAULT_BG;
-                    console.error('Error fetching image', error);
-                }
+                console.error('Error fetching image', error);
             }
         };
 
-        if (!cardBg) {
+        if (!bg) {
             await tryFetchImage();
         } else {
-            imageUrl = cardBg;
+            imageUrl = bg;
         }
 
         calculateBrightness(imageUrl);
@@ -183,37 +166,28 @@
         imgContainer.style.backgroundImage = `url('${imageUrl}')`;
     }
 
-    function buildApiUrl() {
-        const baseUrl = 'https://api.quotable.io/random';
-        const supportedParams = ['author', 'tags', 'minLength', 'maxLength'];
-        const params = {};
-        const queryString = window.location.search.substring(1);
-        const queries = queryString.split('&');
-        for (let i = 0; i < queries.length; i++) {
-            const pair = queries[i].split('=');
-            if (pair.length === 2 && supportedParams.includes(pair[0])) {
-                params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
-            }
-        }
-
-        const query = Object.keys(params)
-            .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
-            .join('&');
-        return baseUrl + (query ? '?' + query : '');;
-    }
-
     async function fetchQuote() {
         try {
-            const response = await fetch(buildApiUrl());
+            const response = await fetch('https://quotesondesign.com/wp-json/wp/v2/posts/?orderby=rand');
             if (!response.ok) {
                 throw new Error('Network error');
             }
-            const data = await response.json();
-            const content = data.content; // 内容
-            const author = data.author; // 作者
+
+            let data = await response.json();
+            if (maxLength > 0) {
+                data = data.filter(item => item.content.rendered.length <= maxLength);
+                if (data.length === 0) {
+                    throw new Error('No quote found');
+                }
+            }
+
+            const randomIndex = Math.floor(Math.random() * data.length);
+
+            const content = data[randomIndex].content.rendered; // 内容
+            const author = data[randomIndex].title.rendered; // 作者
 
             const contentEl = document.getElementById('content');
-            contentEl.textContent = content;
+            contentEl.innerHTML = content;
 
             const authorEl = document.getElementById('author');
             authorEl.innerHTML = '&mdash; ' + author;

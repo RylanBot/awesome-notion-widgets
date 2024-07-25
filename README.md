@@ -14,41 +14,35 @@
 
 ### 🔮 随机诗句
 
-#### 🎁 致谢 [今日诗词](https://www.wxhi.cn/) 开放 API
+#### 🎁 致谢 [今日诗词](https://www.jinrishici.com/) 开放 API
 
 ```
 https://notion-widgets.rylan.cn/poem
 ```
 
-| 参数    | 含义             | 备注                                              |
-| :------ | :--------------- | :------------------------------------------------ |
-| theme   | 诗歌主题         | 参考 https://open.saintic.com/sentence.html       |
-| catalog | 诗歌子分类       | 同上，使用拼音（比如子分类夏天，传入 xiatian）    |
-| author  | 是否显示作者     | true（默认）/ false                               |
-| name    | 是否显示诗名     | true（默认）/ false                               |
-| color   | 字体颜色         | 英文字符串 或者 16 进制（其中 # 号使用 %23 代替） |
-| size    | 字体大小         | 传入数字即可（对应单位 px）                       |
+| 参数    | 含义         | 备注                                              |
+| :------ | :----------- | :------------------------------------------------ |
+| theme   | 诗歌主题     | 参考 https://open.saintic.com/sentence.html       |
+| catalog | 诗歌子分类   | 同上，使用拼音（比如子分类夏天，传入 xiatian）    |
+| author  | 是否显示作者 | true（默认）/ false                               |
+| name    | 是否显示诗名 | true（默认）/ false                               |
+| color   | 字体颜色     | 英文字符串 或者 16 进制（其中 # 号使用 %23 代替） |
+| size    | 字体大小     | 传入数字即可（对应单位 px）                       |
 
 ### 🔮 英文引言
 
-#### 🎁 致谢 [Quotable](https://docs.quotable.io/) 和 [Unsplash](https://unsplash.com/) 开放 API
+#### 🎁 致谢 [Quotes on Design](https://quotesondesign.com/) 和 [BitURL](https://biturl.top/) 开放 API
 
 ```
 https://notion-widgets.rylan.cn/quote
 ```
 
-| 参数      | 含义         | 备注                                              |
-| :-------- | :----------- | :------------------------------------------------ |
-| author    | 引言作者     | 比如 爱因斯坦 对应 Albert Einstein                |
-| tags      | 引言类型     | 比如 business, education, faith, friendship...    |
-| minLength | 句子最短长度 | 数字（一个字母长度算 1，太短可能查不到）          |
-| maxLength | 句子最长长度 |                                                   |
-| width     | 卡片宽度     | 传入数字即可（对应单位 px）                       |
-| size      | 字体大小     | 传入数字即可（对应单位 px）                       |
-| keys      | 背景图片类型 | 任意英文字符串，使用逗号连接（默认 nature,water） |
-
-> [!Note]  
-> **引言[作者](https://docs.quotable.io/docs/api/281e25991b4ea-list-authors)和[类型](https://docs.quotable.io/docs/api/b1e970ddae827-list-tags)的完整可选值可调用 API 接口测试查询**
+| 参数      | 含义         | 备注                               |
+| :-------- | :----------- | :--------------------------------- |
+| width     | 卡片宽度     | 传入数字即可（对应单位 px）        |
+| size      | 字体大小     | 传入数字即可（对应单位 px）        |
+| bg        | 背景图片     | 在线链接（默认使用 Bing 每日壁纸） |
+| maxLength | 句子最长长度 | 一个字母长度算 1，太短可能查不到） |
 
 ### 🔮 音乐播放器
 
@@ -71,7 +65,7 @@ https://notion-widgets.rylan.cn/music
 | autoplay        | 自动播放           | true / false（默认）                                                                   |
 | theme           | 播放器颜色         | 英文字符串 或者 16 进制（其中 # 号使用 %23 代替）                                      |
 | loop            | 循环模式           | none（默认，所有播完后停止） / all（所有播放后从头开始）/ one（单曲循环）              |
-| order           | 播放顺序           | list（默认，按列表）/ random（随机）                                                           |
+| order           | 播放顺序           | list（默认，按列表）/ random（随机）                                                   |
 | volume          | 初始音量           | 0 - 1（默认 0.7）                                                                      |
 | mutex           | 同时只播放一个音频 | true（默认）/ false                                                                    |
 | list-folded     | 是否播放列表展开   | true（默认）/ false                                                                    |
