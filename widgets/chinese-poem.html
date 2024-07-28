@@ -160,7 +160,7 @@
             const poemLines = content.match(/[^、，；。！？\s]+[、，；。！？\s]?/g);
             sentenceEl.innerHTML = '';
             poemLines.forEach((line, index) => {
-                var lineContainer = document.createElement('div');
+                const lineContainer = document.createElement('div');
                 lineContainer.classList.add('poem-line');
                 lineContainer.textContent = line;
                 lineContainer.style.marginTop = (index * 15) + 'px';

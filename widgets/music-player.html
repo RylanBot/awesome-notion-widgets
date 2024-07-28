@@ -23,16 +23,19 @@
       --primary-color: #61b69f;
     }
 
+    body {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     .aplayer {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 95%;
-      margin: 0 auto;
+      width: 95vw;
+      margin: auto;
     }
   </style>
-
 </head>
 
 <body>
@@ -87,23 +90,16 @@
       'mutex': true,
       'list-folded': false,
       'list-max-height': '160px'
-    }
+    };
 
     const metingElement = document.createElement('meting-js');
 
-    if (urlParams.has('url')) {
-      Object.assign(hostedParams, otherParams);
-      Object.keys(hostedParams).forEach(param => {
-        const value = urlParams.get(param) || hostedParams[param];
-        metingElement.setAttribute(param, value);
-      });
-    } else {
-      Object.assign(defaultParams, otherParams);
-      Object.keys(defaultParams).forEach(param => {
-        const value = urlParams.get(param) || defaultParams[param];
-        metingElement.setAttribute(param, value);
-      });
-    }
+    const params = urlParams.has('url') ? hostedParams : defaultParams;
+    Object.assign(params, otherParams);
+    Object.keys(params).forEach(param => {
+      const value = urlParams.get(param) || params[param];
+      metingElement.setAttribute(param, value);
+    });
 
     document.body.appendChild(metingElement);
   }
