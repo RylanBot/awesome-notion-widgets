@@ -104,7 +104,7 @@
     /**
      * 计算图片亮度，调节字体颜色
      * @param {string} imageSrc 图片地址
-    */
+     */
     function calculateBrightness(imageSrc) {
         const img = new Image();
         img.src = imageSrc;
@@ -203,10 +203,6 @@
         updateElement();
         fetchImage();
         fetchQuote();
-    });
-
-    window.addEventListener('message', function (event) {
-        document.body.style.backgroundColor = event.data;
     });
 </script>
 

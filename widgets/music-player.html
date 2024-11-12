@@ -104,13 +104,9 @@
     document.body.appendChild(metingElement);
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', () => {
     initMetingjs();
     updateElement();
-  });
-
-  window.addEventListener('message', function (event) {
-    document.body.style.backgroundColor = event.data;
   });
 </script>
 
