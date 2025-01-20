@@ -1,11 +1,11 @@
-# awesome-notion-widgets
+# <img src="./assets/favicon.ico" width="35"> Awesome Notion Widgets
 
 ## 🌷 效果预览
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-点击查看-lightseagreen?style=for-the-badge&logo=vercel)](https://notion-widgets.rylan.cn/)
+[![在线示例](https://img.shields.io/badge/在线示例-点击查看-lightseagreen?style=for-the-badge&logo=vercel)](https://notion-widgets.rylan.cn/)
 
 > [!Tip]  
-> **更多内容可查看我的[博客文章](https://rylan.cn/article/notion-widgets)**
+> **更多内容详见我的[博客文章](https://rylan.cn/article/notion-widgets)**
 
 ## 🧙🏻 快速上手
 
