@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Awesome Notion Widgets</title>
+  <link rel="icon" type="image" href="/favicon.ico" />
+  <link rel="stylesheet" href="/animation.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/meting/2.0.1/Meting.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --primary-color: #61b69f;
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .aplayer {
+      width: 95vw;
+      margin: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="loader"></div>
+</body>
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+
+  function applyParmToStyle() {
+    const color = urlParams.get("theme");
+    if (color) {
+      document.documentElement.style.setProperty("--primary-color", color);
+    }
+
+    const observer = new MutationObserver((mutations) => {
+      if (urlParams.get("lrc") === "0" && document.querySelector(".aplayer-lrc-contents")) {
+        const lrcContentElement = document.querySelector(".aplayer-lrc-contents");
+        lrcContentElement.style.visibility = "hidden";
+        observer.disconnect();
+      }
+
+      if (document.querySelector(".aplayer-lrc-contents")) {
+        document.getElementById("loader").style.display = "none";
+      }
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  function initMetingjs() {
+    const defaultParams = {
+      server: "netease",
+      type: "playlist",
+      id: "9173198673"
+    };
+
+    const hostedParams = {
+      url: "",
+      name: "",
+      artist: "",
+      cover: ""
+    };
+
+    const otherParams = {
+      autoplay: false,
+      theme: "#61b69f",
+      loop: "none",
+      order: "list",
+      preload: "auto",
+      volume: 0.7,
+      mutex: true,
+      "list-folded": false,
+      "list-max-height": "160px"
+    };
+
+    const metingElement = document.createElement("meting-js");
+
+    const params = urlParams.has("url") ? hostedParams : defaultParams;
+    Object.assign(params, otherParams);
+    Object.keys(params).forEach((param) => {
+      const value = urlParams.get(param) || params[param];
+      metingElement.setAttribute(param, value);
+    });
+
+    document.body.appendChild(metingElement);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    initMetingjs();
+    applyParmToStyle();
+  });
+</script>
+
+</html>

@@ -31,7 +31,7 @@ https://notion-widgets.rylan.cn/poem
 
 ### 🔮 英文引言
 
-#### 🎁 致谢 [Quotes on Design](https://quotesondesign.com/) 和 [BitURL](https://biturl.top/) 开放 API
+#### 🎁 致谢 [Inspirational Quotes](https://github.com/vinitshahdeo/inspirational-quotes/) 库和 [BitURL](https://biturl.top/) 开放 API
 
 ```
 https://notion-widgets.rylan.cn/quote
@@ -42,7 +42,6 @@ https://notion-widgets.rylan.cn/quote
 | width     | 卡片宽度     | 传入数字即可（对应单位 px）        |
 | size      | 字体大小     | 传入数字即可（对应单位 px）        |
 | bg        | 背景图片     | 在线链接（默认使用 Bing 每日壁纸） |
-| maxLength | 句子最长长度 | 一个字母长度算 1，太短可能查不到） |
 
 ### 🔮 音乐播放器
 

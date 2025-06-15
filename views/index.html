@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <link
+      rel="icon"
+      type="image"
+      href="/favicon.ico"
+    />
+    <title>Awesome Notion Widgets</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: #deeceb;
+      }
+
+      .header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #73bab2;
+        padding: 12px 0;
+        margin-bottom: 20px;
+        gap: 20px;
+        font-weight: bold;
+        font-family: "Times New Roman", Times, serif;
+      }
+
+      .header a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        font-size: 28px;
+        color: #ffffff;
+      }
+
+      .header img {
+        width: 36px;
+        height: 36px;
+        margin-right: 16px;
+        filter: invert(1);
+      }
+
+      .iframe-container {
+        display: flex;
+        justify-content: center;
+        gap: 55px;
+        color: #276d58;
+        margin-top: 55px;
+      }
+
+      .iframe-container h2 {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+
+      .left-side,
+      .right-side {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .left-side {
+        margin-top: 45px;
+      }
+
+      iframe {
+        border: 1px solid #ddd;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        background-color: #f3f7f7;
+        margin-bottom: 25px;
+      }
+
+      @media screen and (max-width: 768px) {
+        .header a {
+          font-size: 22px;
+        }
+
+        .iframe-container {
+          flex-direction: column;
+          margin-top: -30px;
+          gap: 0px;
+        }
+
+        .display-card {
+          margin: 20px 0;
+        }
+
+        .left-side {
+          margin-bottom: 25px;
+        }
+
+        iframe {
+          width: 90%;
+          margin: 0 5%;
+        }
+
+        #player-iframe {
+          margin-bottom: 20px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="header">
+      <a href="https://github.com/RylanBot/awesome-notion-widgets">
+        <img src="https://www.svgrepo.com/show/361509/github-logo.svg" />
+        <span>Awesome Notion Widgets</span>
+      </a>
+    </div>
+
+    <div class="iframe-container">
+      <div class="left-side">
+        <div>
+          <h2>随机诗句</h2>
+          <iframe
+            id="poem-iframe"
+            width="275"
+            height="500"
+          ></iframe>
+        </div>
+      </div>
+
+      <div class="right-side">
+        <div class="display-card">
+          <h2>英文引言</h2>
+          <iframe
+            id="quote-iframe"
+            width="400"
+            height="250"
+          ></iframe>
+        </div>
+
+        <div class="display-card">
+          <h2>音乐播放器</h2>
+          <iframe
+            id="music-iframe"
+            width="400"
+            height="275"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    function setIframeSource() {
+      const iframes = document.querySelectorAll("iframe");
+      iframes.forEach((iframe) => {
+        const id = iframe.id.replace("-iframe", "");
+        iframe.src = `/${id}`;
+      });
+    }
+    window.onload = setIframeSource;
+  </script>
+</html>
