@@ -1,6 +1,6 @@
 {
   "editor.codeActionsOnSave": {
-    "source.organizeImports": true
+    "source.organizeImports": "always"
   },
   "[html]": {
     "editor.defaultFormatter": "vscode.html-language-features"
