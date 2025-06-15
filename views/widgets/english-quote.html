@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Awesome Notion Widgets</title>
+  <link rel="icon" type="image" href="/favicon.ico" />
+  <link rel="stylesheet" href="/animation.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --primary-color: #999bec;
+      --primary-size: 18px;
+      --primary-width: 200px;
+    }
+
+    .quote-container {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: 1px solid #c9c9c9;
+      border-radius: 8px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      max-width: var(--primary-width);
+      font-family: "Times New Roman", Times, serif;
+      text-shadow: 0.5px 0px #c9c9c9;
+      background-color: #ffffff;
+    }
+
+    .img-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      border-radius: 8px;
+      filter: blur(1px);
+    }
+
+    .text-container {
+      margin: 20px;
+    }
+
+    #content {
+      font-size: var(--primary-size);
+      font-weight: bold;
+      margin-bottom: 10px;
+      text-shadow: 0.5px 0px #c9c9c9;
+    }
+
+    #author {
+      font-size: calc(var(--primary-size) - 4px);
+      font-style: italic;
+      text-align: right;
+      filter: brightness(120%);
+      text-shadow: 1px 1px 3px #a9a9a9;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="loader"></div>
+  <div class="quote-container">
+    <div class="img-container"></div>
+    <div class="text-container">
+      <div id="content"></div>
+      <div id="author"></div>
+    </div>
+  </div>
+</body>
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  let bg = "";
+
+  function applyParmToStyle() {
+    const size = urlParams.get("size");
+    if (size) {
+      document.documentElement.style.setProperty("--primary-size", `${size}px`);
+    }
+
+    const width = urlParams.get("width");
+    if (width) {
+      document.documentElement.style.setProperty("--primary-width", `${width}px`);
+    }
+
+    bg = urlParams.get("bg") || "";
+  }
+
+  /**
+   * 计算图片亮度，调节字体颜色
+   */
+  function calculateBrightness(imageSrc) {
+    const img = new Image();
+    img.src = imageSrc;
+    img.crossOrigin = "Anonymous";
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+
+      let red, green, blue, avg;
+      let total = 0;
+      let count = 0;
+      for (let i = 0; i < data.length; i += 4) {
+        red = data[i];
+        green = data[i + 1];
+        blue = data[i + 2];
+        avg = (red + green + blue) / 3;
+        total += avg;
+        count++;
+      }
+
+      const brightness = total / count;
+      const textColor = brightness > 128 ? "#000000" : "#ffffff";
+      const shadowColor = brightness > 128 ? "#c8c8c8" : "#888888";
+
+      document.querySelector(".quote-container").style.color = textColor;
+    };
+  }
+
+  async function fetchImage() {
+    const imgContainer = document.querySelector(".img-container");
+    let imageUrl = "";
+
+    const tryFetchImage = async () => {
+      try {
+        const bingApi = "https://bing.biturl.top/";
+        const response = await fetch(bingApi);
+        const data = await response.json();
+        imageUrl = await data.url;
+      } catch (error) {
+        console.error("Error fetching image", error);
+      }
+    };
+
+    if (!bg) {
+      await tryFetchImage();
+    } else {
+      imageUrl = bg;
+    }
+
+    calculateBrightness(imageUrl);
+    imgContainer.style.backgroundSize = "cover";
+    imgContainer.style.backgroundPosition = "center";
+    imgContainer.style.backgroundImage = `url('${imageUrl}')`;
+  }
+
+  async function fetchQuote() {
+    try {
+      const response = await fetch("/api/quote");
+      if (!response.ok) {
+        throw new Error("Network error");
+      }
+
+      const data = await response.json();
+
+      const randomIndex = Math.floor(Math.random() * data.length);
+
+      const content = data.quote; // 内容
+      const author = data.author; // 作者
+
+      const contentEl = document.getElementById("content");
+      contentEl.innerHTML = content;
+
+      const authorEl = document.getElementById("author");
+      authorEl.innerHTML = "&mdash; " + author;
+
+      document.querySelector(".quote-container").style.display = "block";
+      document.getElementById("loader").style.display = "none";
+    } catch (error) {
+      console.error("Error fetching quote", error);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    applyParmToStyle();
+    fetchImage();
+    fetchQuote();
+  });
+</script>
+
+</html>

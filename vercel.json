@@ -1,16 +1,43 @@
 {
-    "routes": [
-        {
-            "src": "/poem",
-            "dest": "/widgets/chinese-poem.html"
-        },
-        {
-            "src": "/quote",
-            "dest": "/widgets/english-quote.html"
-        },
-        {
-            "src": "/music",
-            "dest": "/widgets/music-player.html"
-        }
-    ]
+  "version": 2,
+  "builds": [
+    {
+      "src": "server/app.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "views/**/*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "assets/**/*",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/views/index.html"
+    },
+    {
+      "src": "/api/quote",
+      "dest": "/server/app.js"
+    },
+    {
+      "src": "/poem",
+      "dest": "/views/widgets/chinese-poem.html"
+    },
+    {
+      "src": "/quote",
+      "dest": "/views/widgets/english-quote.html"
+    },
+    {
+      "src": "/music",
+      "dest": "/views/widgets/music-player.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/assets/$1"
+    }
+  ]
 }
