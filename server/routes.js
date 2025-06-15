@@ -2,7 +2,7 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 
-import { getQuote } from "inspirational-quotes";
+import quotes from "quotesy";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -28,7 +28,7 @@ router.get("/music", (_, res) => {
 
 // API
 router.get("/api/quote", (_, res) => {
-  const quote = getQuote();
+  const quote = quotes.random();
   res.json({
     quote: quote.text,
     author: quote.author

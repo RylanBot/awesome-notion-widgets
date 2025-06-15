@@ -31,7 +31,7 @@ https://notion-widgets.rylan.cn/poem
 
 ### 🔮 英文引言
 
-#### 🎁 致谢 [Inspirational Quotes](https://github.com/vinitshahdeo/inspirational-quotes/) 库和 [BitURL](https://biturl.top/) 开放 API
+#### 🎁 致谢 [Quotesy](https://github.com/dwyl/quotes/) 库和 [BitURL](https://biturl.top/) 开放 API
 
 ```
 https://notion-widgets.rylan.cn/quote

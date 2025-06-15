@@ -8,7 +8,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "inspirational-quotes": "^2.0.1"
+    "quotesy": "^1.0.10"
   },
   "devDependencies": {
     "connect-livereload": "^0.6.1",

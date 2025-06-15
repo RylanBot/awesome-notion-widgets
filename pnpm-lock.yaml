@@ -14,9 +14,9 @@ importers:
       express:
         specifier: ^5.1.0
         version: 5.1.0
-      inspirational-quotes:
-        specifier: ^2.0.1
-        version: 2.0.1
+      quotesy:
+        specifier: ^1.0.10
+        version: 1.0.10
     devDependencies:
       connect-livereload:
         specifier: ^0.6.1
@@ -214,9 +214,6 @@ packages:
   inherits@2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
 
-  inspirational-quotes@2.0.1:
-    resolution: {integrity: sha512-IYJEdSUphF4HOoOiABua2l7aUZ2OBTc/NpihPuENF3ieXEBuywOTtYle7zzvZfEJKouG9utOwQpMQtm0GIB2BQ==}
-
   ipaddr.js@1.9.1:
     resolution: {integrity: sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==}
     engines: {node: '>= 0.10'}
@@ -332,6 +329,9 @@ packages:
   qs@6.14.0:
     resolution: {integrity: sha512-YWWTjgABSKcvs/nWBi9PycY/JiPJqOD4JA6o9Sej2AtvSGarXxKC3OQSk4pAarbdQlKAh5D4FCQkJNkW+GAn3w==}
     engines: {node: '>=0.6'}
+
+  quotesy@1.0.10:
+    resolution: {integrity: sha512-Go6vfpH0JXmEtQXzrvCP8EkIvzYoQ9jbzFjE8RSpa+1+lUNTcf/mFMZbomCC4iUv8WGP9RTE1YhB6NV7pDwFNA==}
 
   range-parser@1.2.1:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
@@ -661,8 +661,6 @@ snapshots:
 
   inherits@2.0.4: {}
 
-  inspirational-quotes@2.0.1: {}
-
   ipaddr.js@1.9.1: {}
 
   is-binary-path@2.1.0:
@@ -758,6 +756,8 @@ snapshots:
   qs@6.14.0:
     dependencies:
       side-channel: 1.1.0
+
+  quotesy@1.0.10: {}
 
   range-parser@1.2.1: {}
 
