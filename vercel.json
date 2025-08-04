@@ -20,7 +20,7 @@
       "dest": "/views/index.html"
     },
     {
-      "src": "/api/quote",
+      "src": "/api/(.*)",
       "dest": "/server/app.js"
     },
     {

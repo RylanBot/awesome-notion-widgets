@@ -139,22 +139,22 @@
 
     const tryFetchImage = async () => {
       try {
-        const bingApi = "https://bing.biturl.top/";
-        const response = await fetch(bingApi);
-        const data = await response.json();
-        imageUrl = await data.url;
+        const bingResponse = await fetch('/api/bing-image');
+        const bingData = await bingResponse.json();
+        imageUrl = bingData.url;
       } catch (error) {
         console.error("Error fetching image", error);
       }
     };
 
-    if (!bg) {
-      await tryFetchImage();
-    } else {
+    if (bg) {
       imageUrl = bg;
+    } else {
+      await tryFetchImage();
     }
 
     calculateBrightness(imageUrl);
+
     imgContainer.style.backgroundSize = "cover";
     imgContainer.style.backgroundPosition = "center";
     imgContainer.style.backgroundImage = `url('${imageUrl}')`;
