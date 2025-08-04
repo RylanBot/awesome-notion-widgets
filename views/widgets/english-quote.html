@@ -80,7 +80,6 @@
 
 <script>
   const urlParams = new URLSearchParams(window.location.search);
-  let bg = "";
 
   function applyParmToStyle() {
     const size = urlParams.get("size");
@@ -92,8 +91,6 @@
     if (width) {
       document.documentElement.style.setProperty("--primary-width", `${width}px`);
     }
-
-    bg = urlParams.get("bg") || "";
   }
 
   /**
@@ -135,26 +132,23 @@
 
   async function fetchImage() {
     const imgContainer = document.querySelector(".img-container");
-    let imageUrl = "";
 
     const tryFetchImage = async () => {
       try {
-        const bingApi = "https://bing.biturl.top/";
-        const response = await fetch(bingApi);
-        const data = await response.json();
-        imageUrl = await data.url;
+        const bingResponse = await fetch('/api/bing-image');
+        const bingData = await bingResponse.json();
+        return bingData.url;
       } catch (error) {
         console.error("Error fetching image", error);
       }
     };
 
-    if (!bg) {
-      await tryFetchImage();
-    } else {
-      imageUrl = bg;
+    let imageUrl = urlParams.get("bg");
+    if (!imageUrl) {
+      imageUrl = await tryFetchImage();
     }
-
     calculateBrightness(imageUrl);
+
     imgContainer.style.backgroundSize = "cover";
     imgContainer.style.backgroundPosition = "center";
     imgContainer.style.backgroundImage = `url('${imageUrl}')`;
